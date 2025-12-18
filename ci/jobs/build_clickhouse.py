@@ -107,6 +107,8 @@ def main():
     cmake_cmd = BUILD_TYPE_TO_CMAKE[build_type]
     info = Info()
     # Global sccache settings for local and CI runs
+    os.environ["SCCACHE_DIR"] = f"{temp_dir}/sccache"
+    os.environ["SCCACHE_CACHE_SIZE"] = "40G"
     os.environ["SCCACHE_IDLE_TIMEOUT"] = "7200"
     os.environ["SCCACHE_BUCKET"] = Settings.S3_ARTIFACT_PATH
     os.environ["SCCACHE_S3_KEY_PREFIX"] = "ccache/sccache"

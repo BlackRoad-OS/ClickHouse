@@ -130,11 +130,14 @@ def main():
     clickhouse_bin_path = Path(f"{build_dir}/programs/clickhouse")
 
     # Global sccache settings for local and CI runs
+    os.environ["SCCACHE_DIR"] = f"{temp_dir}/sccache"
+    os.environ["SCCACHE_CACHE_SIZE"] = "40G"
     os.environ["SCCACHE_IDLE_TIMEOUT"] = "7200"
     os.environ["SCCACHE_BUCKET"] = Settings.S3_ARTIFACT_PATH
     os.environ["SCCACHE_S3_KEY_PREFIX"] = "ccache/sccache"
     os.environ["SCCACHE_ERROR_LOG"] = f"{build_dir}/sccache.log"
     os.environ["SCCACHE_LOG"] = "info"
+
     if Info().is_local_run:
         os.environ["SCCACHE_S3_NO_CREDENTIALS"] = "true"
         if clickhouse_bin_path.exists():
